@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #00355f;
+    --primary-c: #0f4c81;
+    --secondary: #006c49;
+    --sec-c: #6cf8bb;
+    --bg: #f8f9ff;
+    --surface: #ffffff;
+    --surf-low: #eff4ff;
+    --surf-cont: #e5eeff;
+    --surf-high: #dce9ff;
+    --on-bg: #0b1c30;
+    --on-surf: #0b1c30;
+    --on-surf-v: #42474f;
+    --outline: #727780;
+    --outline-v: #c2c7d1;
+    --error: #ba1a1a;
+    --inverse: #213145;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Hanken Grotesk', ui-sans-serif, system-ui;
+    background-color: var(--bg);
+    color: var(--on-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Remove blue highlight on mobile tap */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  /* Mobile app shell */
+  .app-shell {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--bg);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+    position: relative;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-white border border-[--outline-v] rounded-xl p-4 mb-3;
+  }
+  .card-primary {
+    background: var(--primary);
+    border-color: transparent;
+    color: white;
+  }
+  .card-amber {
+    background: #fef3e2;
+    border-color: #f59e0b33;
+  }
+  .card-green {
+    background: #ecfdf5;
+    border-color: #05966933;
+  }
+
+  /* Tags / badges */
+  .tag {
+    @apply inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold tracking-wide;
+  }
+  .tag-green { background: var(--sec-c); color: var(--secondary); }
+  .tag-blue { background: var(--surf-cont); color: var(--primary); }
+  .tag-amber { background: #fde68a; color: #92400e; }
+  .tag-purple { background: #ede9fe; color: #5b21b6; }
+  .tag-red { background: #fee2e2; color: #991b1b; }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-semibold cursor-pointer border-none transition-all duration-150 font-sans;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: #004a85; }
+  .btn-secondary { background: var(--secondary); color: white; }
+  .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+  .btn-outline:hover { background: var(--surf-low); }
+  .btn-full { @apply w-full; }
+  .btn-sm { @apply text-xs px-3.5 py-1.5; }
+
+  /* Inputs */
+  .input {
+    @apply w-full px-3.5 py-3 border border-[--outline-v] rounded-lg text-sm font-sans bg-white text-[--on-bg] outline-none transition-colors;
+  }
+  .input:focus { border-color: var(--primary); }
+  .input::placeholder { color: var(--outline); }
+
+  /* Progress bar */
+  .progress-bar {
+    @apply w-full h-2 rounded-full overflow-hidden;
+    background: var(--surf-high);
+  }
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-500;
+    background: var(--secondary);
+  }
+
+  /* Chips / filter pills */
+  .chip {
+    @apply flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold cursor-pointer border border-[--outline-v] bg-white text-[--on-surf-v] transition-all font-sans;
+  }
+  .chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  /* Quiz options */
+  .quiz-option {
+    @apply w-full text-left p-3.5 border-2 border-[--outline-v] rounded-xl cursor-pointer mb-2.5 text-sm font-medium transition-all bg-white font-sans;
+  }
+  .quiz-option:hover { border-color: var(--primary); background: var(--surf-low); }
+  .quiz-option.selected { border-color: var(--primary); background: var(--surf-low); color: var(--primary); }
+  .quiz-option.correct { border-color: var(--secondary); background: #ecfdf5; color: #065f46; }
+  .quiz-option.wrong { border-color: var(--error); background: #fee2e2; color: #991b1b; }
+
+  /* Hide scrollbar */
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+@layer utilities {
+  .animate-fade-in { animation: fadeIn 0.2s ease; }
+  .animate-slide-up { animation: slideUp 0.25s ease; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
