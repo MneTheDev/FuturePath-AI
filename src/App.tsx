@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { hasSupabaseConfig, supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/hooks/useAuthStore'
 
 import { AppShell } from '@/components/layout/AppShell'
@@ -34,6 +34,11 @@ export default function App() {
   const [booting, setBooting] = useState(true)
 
   useEffect(() => {
+    if (!hasSupabaseConfig) {
+      setBooting(false)
+      return
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       if (session?.user) {
@@ -55,6 +60,20 @@ export default function App() {
     })
     return () => subscription.unsubscribe()
   }, [])
+
+  if (!hasSupabaseConfig) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[--bg] p-6">
+        <section className="card max-w-lg text-center" role="alert">
+          <h1 className="mb-3 text-xl font-bold text-[--primary]">Supabase setup required</h1>
+          <p className="text-sm text-[--on-surf-v]">
+            Add <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> to this
+            site&apos;s environment variables in Netlify, then trigger a new deploy.
+          </p>
+        </section>
+      </main>
+    )
+  }
 
   if (booting) {
     return (

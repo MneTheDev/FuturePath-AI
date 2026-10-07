@@ -1,13 +1,19 @@
 /// <reference types="vite/client" />
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''
+const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL ?? '').trim()
+const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY ?? '').trim()
 
 const looksLikePlaceholder = (val: string) =>
-  !val || val.includes('your-project') || val.includes('anon-key') || val.includes('your-anon')
+  !val.trim() ||
+  val.includes('your-project') ||
+  val.includes('anon-key') ||
+  val.includes('your-anon')
 
-if (looksLikePlaceholder(supabaseUrl) || looksLikePlaceholder(supabaseAnonKey)) {
+export const hasSupabaseConfig =
+  !looksLikePlaceholder(supabaseUrl) && !looksLikePlaceholder(supabaseAnonKey)
+
+if (!hasSupabaseConfig) {
   // Clear, actionable warning for developers when env vars are not configured
   // This commonly causes network errors like "Failed to fetch" in the browser.
   // See .env.example for the required variables.
@@ -18,13 +24,17 @@ if (looksLikePlaceholder(supabaseUrl) || looksLikePlaceholder(supabaseAnonKey)) 
   )
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-  },
-})
+export const supabase = createClient(
+  supabaseUrl || 'https://missing-supabase-config.invalid',
+  supabaseAnonKey || 'missing-supabase-anon-key',
+  {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,
+    },
+  }
+)
 
 export default supabase
 
