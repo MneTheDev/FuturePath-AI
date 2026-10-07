@@ -22,9 +22,11 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       session: null,
       useMockAuth: false,
+      hydrated: false,
       setUser: (user) => set({ user }),
       setSession: (session) => set({ session }),
       setUseMockAuth: (use) => set({ useMockAuth: use }),
+      setHydrated: (hydrated) => set({ hydrated }),
       signOut: async () => {
         set({ user: null, session: null })
         try {
@@ -35,6 +37,9 @@ export const useAuthStore = create<AuthState>()(
         }
       },
     }),
-    { name: 'futurepath-auth' }
+    {
+      name: 'futurepath-auth',
+      onRehydrateStorage: () => (state) => state?.setHydrated(true),
+    }
   )
 )

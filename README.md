@@ -213,11 +213,11 @@ npm run build
 
 ### Netlify
 
-```bash
-npm run build
-# Drag & drop the dist/ folder to netlify.com
-# Or connect GitHub repo
-```
+1. Import this GitHub repository in Netlify. The included `netlify.toml` configures `npm run build`, publishes `dist/`, and supports React Router routes.
+2. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in **Site configuration → Environment variables**.
+3. Deploy the site.
+
+The AI Career Copilot API is an Express server (`server/index.js`), so it is not included in the static Netlify build. Host that API separately and configure the frontend to use its deployed URL before expecting the AI features to work in production.
 
 ### Environment Variables (required)
 
